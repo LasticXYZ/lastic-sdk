@@ -1,12 +1,14 @@
+import Snackbar from '@/Toasts/Snackbar'
 import { accountArraysAreEqual, accountsAreEqual, initPolkadotJs } from '@/helpers'
 import { registerDeployments } from '@/registry'
 import {
   SubstrateChain,
   SubstrateDeployment,
   SubstrateWallet,
+  Toast,
   UseInkathonError,
   UseInkathonErrorCode,
-  UseInkathonProviderContextType,
+  UseInkathonProviderContextType
 } from '@/types'
 import {
   allSubstrateWallets,
@@ -28,6 +30,8 @@ import {
   useState,
 } from 'react'
 import { getSubstrateChain } from './chains'
+
+const MAX_VISIBLE_TOASTS = 6
 
 const UseInkathonProviderContext = createContext<UseInkathonProviderContextType | null>(null)
 
@@ -99,6 +103,8 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
   const activeSigner = useRef<Signer>()
   const unsubscribeAccounts = useRef<Unsubcall>()
   const [deployments, setDeployments] = useState<SubstrateDeployment[]>([])
+
+  const [toasts, setToasts] = useState<Toast[]>([])
 
   // Register given deployments
   useEffect(() => {
@@ -296,6 +302,18 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
     await connect(chain, relayChain, activeWallet)
   }
 
+  const addToast = (toast: Omit<Toast, 'id'>) => {
+    const id = Date.now()
+
+    const rest = toasts.length < MAX_VISIBLE_TOASTS ? toasts : toasts.slice(0, -1)
+
+    setToasts([{ ...toast, id }, ...rest])
+  }
+
+  const removeToast = (key: Toast['id']) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== key))
+  }
+
   return (
     <UseInkathonProviderContext.Provider
       value={{
@@ -320,9 +338,14 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
         setActiveAccount,
         lastActiveAccount,
         deployments,
+        toasts, 
+        setToasts, 
+        addToast, 
+        removeToast 
       }}
-    >
+    > 
+      <Snackbar />
       {children}
-    </UseInkathonProviderContext.Provider>
+=    </UseInkathonProviderContext.Provider>
   )
 }

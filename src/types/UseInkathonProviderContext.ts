@@ -5,6 +5,16 @@ import { Signer } from '@polkadot/types/types'
 import { Dispatch, SetStateAction } from 'react'
 import { SubstrateDeployment } from './SubstrateDeployment'
 
+export type Toast = {
+  id: number
+  title?: string
+  link?: string
+  duration?: number
+  type: ToastType
+}
+
+export type ToastType = 'success' | 'error' | 'loading' | 'canceled';
+
 export type UseInkathonProviderContextType = {
   isInitializing?: boolean
   isInitialized?: boolean
@@ -32,6 +42,10 @@ export type UseInkathonProviderContextType = {
   setActiveAccount?: Dispatch<SetStateAction<InjectedAccount | undefined>>
   lastActiveAccount?: InjectedAccount
   deployments?: SubstrateDeployment[]
+  toasts: Toast[]
+  setToasts: (toasts: Toast[]) => void
+  addToast: (toast: Omit<Toast, 'id'>) => void
+  removeToast: (id: Toast['id']) => void
 }
 
 export interface UseInkathonError {
