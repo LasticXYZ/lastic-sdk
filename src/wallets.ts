@@ -90,10 +90,25 @@ export const nightlyConnect: SubstrateWallet = {
     'https://github.com/scio-labs/use-inkathon/raw/main/assets/wallet-logos/nightlyConnect@512w.png',
   ],
 }
+
+export const mimir: SubstrateWallet = {
+  id: 'mimir',
+  name: 'Mimir Wallet',
+  platforms: [
+    SubstrateWalletPlatform.Browser
+  ],
+  urls: {
+    website: 'https://mimir.global',
+  },
+  logoUrls: [
+    'https://app.mimir.global/icons/icon@128.png',
+    'https://app.mimir.global/icons/icon@512.png'
+  ],
+}
 /**
  * Exporting all wallets separately
  */
-export const allSubstrateWallets: SubstrateWallet[] = [subwallet, talisman, polkadotjs, nova]
+export const allSubstrateWallets: SubstrateWallet[] = [subwallet, talisman, polkadotjs, nova, mimir]
 
 /**
  * Returns wallet (if existent) for given identifier (`id` field).

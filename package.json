@@ -1,7 +1,7 @@
 {
   "name": "@poppyseed/lastic-sdk",
   "author": "Lastic <hi@lastic.xyz> (https://lastic.xyz)",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "description": "Typesafe React Hooks abstracting functionality of polkadot.js, created for Lastic website",
   "homepage": "https://lastic.xyz",
   "license": "GPL-3.0",
@@ -113,6 +113,7 @@
     "@changesets/cli": "^2.27.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mimirdev/apps-inject": "^0.3.0",
     "@mui/material": "^5.15.20",
     "@polkadot/api": "^11.3.1",
     "@polkadot/api-contract": "^11.3.1",

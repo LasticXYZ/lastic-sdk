@@ -17,6 +17,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.3.3)(react@18.3.1)
+      '@mimirdev/apps-inject':
+        specifier: ^0.3.0
+        version: 0.3.0(@polkadot/api@11.3.1)(@polkadot/types@11.3.1)(@polkadot/util@12.6.2)
       '@mui/material':
         specifier: ^5.15.20
         version: 5.15.20(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)
@@ -1261,6 +1264,29 @@ packages:
       fs-extra: 8.1.0
       globby: 11.1.0
       read-yaml-file: 1.1.0
+    dev: false
+
+  /@mimirdev/apps-inject@0.3.0(@polkadot/api@11.3.1)(@polkadot/types@11.3.1)(@polkadot/util@12.6.2):
+    resolution: {integrity: sha512-dKq715ZCvZm0ckUgvB69Uh90h1O1Fxm8YR2tyCRJvI44WHfXSUf8JkRPFs22ifZlcKGRjmaYvtnZbK+u/PcJpw==}
+    dependencies:
+      '@mimirdev/apps-sdk': 0.2.0(@polkadot/api@11.3.1)(@polkadot/types@11.3.1)(@polkadot/util@12.6.2)
+    transitivePeerDependencies:
+      - '@polkadot/api'
+      - '@polkadot/types'
+      - '@polkadot/util'
+    dev: false
+
+  /@mimirdev/apps-sdk@0.2.0(@polkadot/api@11.3.1)(@polkadot/types@11.3.1)(@polkadot/util@12.6.2):
+    resolution: {integrity: sha512-jTAT0t0uUF87dDnrTfg1WQnbG+k8qgvQhr1MX8tZNfJhAtNqua//5R/3467f/YdPXp5gSQMX4yBTGpI+oE6Vdg==}
+    peerDependencies:
+      '@polkadot/api': '*'
+      '@polkadot/types': '*'
+      '@polkadot/util': '*'
+    dependencies:
+      '@polkadot/api': 11.3.1
+      '@polkadot/types': 11.3.1
+      '@polkadot/util': 12.6.2
+      eventemitter3: 5.0.1
     dev: false
 
   /@mui/base@5.0.0-beta.40(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1):
@@ -2513,6 +2539,7 @@ packages:
 
   /@substrate/connect@0.8.10:
     resolution: {integrity: sha512-DIyQ13DDlXqVFnLV+S6/JDgiGowVRRrh18kahieJxhgvzcWicw5eLc6jpfQ0moVVLBYkO7rctB5Wreldwpva8w==}
+    deprecated: versions below 1.x are no longer maintained
     requiresBuild: true
     dependencies:
       '@substrate/connect-extension-protocol': 2.0.0
@@ -2527,6 +2554,7 @@ packages:
 
   /@substrate/connect@0.8.8:
     resolution: {integrity: sha512-zwaxuNEVI9bGt0rT8PEJiXOyebLIo6QN1SyiAHRPBOl6g3Sy0KKdSN8Jmyn++oXhVRD8aIe75/V8ZkS81T+BPQ==}
+    deprecated: versions below 1.x are no longer maintained
     requiresBuild: true
     dependencies:
       '@substrate/connect-extension-protocol': 2.0.0
