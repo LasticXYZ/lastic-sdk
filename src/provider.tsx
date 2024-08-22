@@ -137,6 +137,16 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
         ...apiOptions,
       }))
 
+      ;(async () => {
+        // special, apps will working in iframe with mimir wallet
+        // so, check if the environment in ifram
+        const origin = await isMimirReady();
+        if (origin && MIMIR_REGEXP.test(origin)) {
+          // inject window.injectedWeb3.mimir
+          inject()
+        }
+      })()
+
       api?.disconnect()
       setApi(_api)
       relayApi?.disconnect()
@@ -214,14 +224,6 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
     ) {
       const { _api, _relayApi } = await initialize(chain, relayChain)
       if (!_api?.isConnected || !_relayApi?.isConnected) return
-    }
-
-    // special, apps will working in iframe with mimir wallet
-    // so, check if the environment in ifram
-    const origin = await isMimirReady();
-    if (origin && MIMIR_REGEXP.test(origin)) {
-      // inject window.injectedWeb3.mimir
-      inject()
     }
 
     try {
