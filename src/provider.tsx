@@ -247,6 +247,10 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
       activeExtension.current = extension
       activeSigner.current = extension?.signer as Signer
 
+      extension?.accounts.get().then(accounts => {
+        updateAccounts(accounts, lastActiveAccountAddress)
+      })
+
       // Query & keep listening to injected accounts
       unsubscribeAccounts.current?.()
       const unsubscribe = extension?.accounts.subscribe((accounts) => {

@@ -1,7 +1,7 @@
 import { Toast } from '@/types'
+import { checkCall } from '@/utils/check'
 import { ApiPromise, SubmittableResult } from '@polkadot/api'
-import { InjectedAccount } from '@polkadot/extension-inject/types'
-import { Signer } from '@polkadot/types/types'
+import { InjectedAccount, InjectedExtension } from '@polkadot/extension-inject/types'
 import { Dispatch, SetStateAction } from 'react'
 import { transformParams } from './broker'
 import { txErrHandler, txResHandler } from './broker_handler'
@@ -28,21 +28,39 @@ const signedTx = async (
   addToast: (toast: Omit<Toast, 'id'>) => void,
   setUnsub: Dispatch<SetStateAction<any>>,
   activeAccount: InjectedAccount,
-  activeSigner: Signer,
+  activeExtension: InjectedExtension
 ) => {
   const address = activeAccount?.address
   const transformed = transformParams(paramFields, inputParams)
 
-  const txExecute = transformed
+  let txExecute = transformed
     ? api.tx[palletRpc][callable](...transformed)
     : api.tx[palletRpc][callable]()
 
-  const signerOptions = {
-    signer: activeSigner,
+  const isMimir = activeExtension.name === 'mimir'
+
+  if (isMimir) {
+    const result: any = await activeExtension.signer.signPayload?.({
+      address,
+      genesisHash: api.genesisHash.toHex(),
+      method: txExecute.method.toHex()
+    } as unknown as any)
+
+    const method = api.registry.createType('Call', result.payload.method)
+
+    if (!checkCall(api, method, txExecute.method)) {
+      throw new Error('not safe tx')
+    }
+
+    txExecute = api.tx[method.section][method.method](...method.args)
+
+    txExecute.addSignature(result.signer, result.signature, result.payload)
+  } else {
+    await txExecute.signAsync(address, { signer: activeExtension.signer })
   }
 
   const unsub = await txExecute
-    .signAndSend(address, signerOptions, (result: SubmittableResult) =>
+    .send((result: SubmittableResult) =>
       txResHandler(setStatus, api, addToast, result),
     )
     .catch((err: Error) => txErrHandler(setStatus, addToast, err))
