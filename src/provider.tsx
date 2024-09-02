@@ -16,14 +16,15 @@ import {
   getSubstrateWallet,
   isWalletInstalled
 } from '@/wallets'
+import { inject, isMimirReady, MIMIR_REGEXP } from '@mimirdev/apps-inject'
 import { ApiPromise, HttpProvider, WsProvider } from '@polkadot/api'
 import { ApiOptions } from '@polkadot/api/types'
 import { InjectedAccount, InjectedExtension, Unsubcall } from '@polkadot/extension-inject/types'
 import { Signer } from '@polkadot/types/types'
 import {
+  createContext,
   FC,
   PropsWithChildren,
-  createContext,
   useContext,
   useEffect,
   useRef,
@@ -136,6 +137,16 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
         ...apiOptions,
       }))
 
+      ;(async () => {
+        // special, apps will working in iframe with mimir wallet
+        // so, check if the environment in ifram
+        const origin = await isMimirReady();
+        if (origin && MIMIR_REGEXP.test(origin)) {
+          // inject window.injectedWeb3.mimir
+          inject()
+        }
+      })()
+
       api?.disconnect()
       setApi(_api)
       relayApi?.disconnect()
@@ -235,6 +246,10 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
       const extension = await enableWallet(_wallet, appName)
       activeExtension.current = extension
       activeSigner.current = extension?.signer as Signer
+
+      extension?.accounts.get().then(accounts => {
+        updateAccounts(accounts, lastActiveAccountAddress)
+      })
 
       // Query & keep listening to injected accounts
       unsubscribeAccounts.current?.()

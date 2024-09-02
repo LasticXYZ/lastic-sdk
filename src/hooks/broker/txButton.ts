@@ -1,8 +1,7 @@
 import { Toast } from '@/types'
 import { signedTx, unsignedTx } from '@/utils'
 import { ApiPromise } from '@polkadot/api'
-import { InjectedAccount } from '@polkadot/extension-inject/types'
-import { Signer } from '@polkadot/types/types'
+import { InjectedAccount, InjectedExtension } from '@polkadot/extension-inject/types'
 import { useState } from 'react'
 
 export interface TxButtonProps {
@@ -17,7 +16,7 @@ export interface TxButtonProps {
   }
   type: 'SIGNED-TX' | 'UNSIGNED-TX'
   activeAccount: InjectedAccount | undefined
-  activeSigner: Signer | undefined
+  activeExtension: InjectedExtension | undefined
 }
 
 interface UseTxButtonResult {
@@ -32,7 +31,7 @@ export const useTxButton = ({
   attrs,
   type,
   activeAccount,
-  activeSigner,
+  activeExtension,
 }: TxButtonProps): UseTxButtonResult => {
   const [status, setStatus] = useState<string | null>(null)
   const [unsub, setUnsub] = useState<(() => void) | null>(null)
@@ -51,7 +50,7 @@ export const useTxButton = ({
     setStatus('Sending...')
 
     // Check if API, account, and signer are present
-    if (!api || !activeAccount || !activeSigner) {
+    if (!api || !activeAccount || !activeExtension) {
       setStatus('Error: API, account or signer not present')
       return
     }
@@ -59,7 +58,7 @@ export const useTxButton = ({
     // Call the appropriate transaction function based on the type
     try {
       if (isSigned()) {
-        await signedTx(api, attrs, setStatus, addToast, setUnsub, activeAccount, activeSigner)
+        await signedTx(api, attrs, setStatus, addToast, setUnsub, activeAccount, activeExtension)
       } else if (isUnsigned()) {
         await unsignedTx(api, attrs, setStatus, addToast, setUnsub)
       }
