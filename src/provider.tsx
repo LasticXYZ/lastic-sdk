@@ -99,9 +99,9 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
   const [accounts, setAccounts] = useState<InjectedAccount[]>([])
   const [activeAccount, setActiveAccount] = useState<InjectedAccount>()
   const [lastActiveAccount, setLastActiveAccount] = useState<InjectedAccount>()
-  const activeExtension = useRef<InjectedExtension>()
-  const activeSigner = useRef<Signer>()
-  const unsubscribeAccounts = useRef<Unsubcall>()
+  const activeExtension = useRef<InjectedExtension | undefined>(undefined)
+  const activeSigner = useRef<Signer | undefined>(undefined)
+  const unsubscribeAccounts = useRef<Unsubcall | undefined>(undefined)
   const [deployments, setDeployments] = useState<SubstrateDeployment[]>([])
 
   const [toasts, setToasts] = useState<Toast[]>([])
@@ -241,7 +241,7 @@ export const UseInkathonProvider: FC<UseInkathonProviderProps> = ({
       const unsubscribe = extension?.accounts.subscribe((accounts) => {
         updateAccounts(accounts, lastActiveAccountAddress)
       })
-      unsubscribeAccounts.current = unsubscribe
+      unsubscribeAccounts.current = unsubscribe as Unsubcall | undefined
     } catch (e: any) {
       console.error('Error while connecting wallet:', e)
       activeExtension.current = undefined

@@ -36,40 +36,28 @@ export const alephzeroTestnet: SubstrateChain = {
   faucetUrls: ['https://faucet.test.azero.dev'],
 }
 
-export const rococoContracts: SubstrateChain = {
-  network: 'rococo-contracts',
-  name: 'Rococo Contracts Testnet',
-  ss58Prefix: 42,
-  rpcUrls: ['wss://rococo-contracts-rpc.polkadot.io'],
+export const paseo: SubstrateChain = {
+  network: 'paseo',
+  name: 'Paseo Testnet',
+  ss58Prefix: 0,
+  rpcUrls: ['wss://sys.ibp.network/paseo'], // wss://rpc.dotters.network/paseo // wss://rpc.paseo.io:443
   explorerUrls: {
-    [SubstrateExplorer.Subscan]: `https://rococo.subscan.io`,
+    [SubstrateExplorer.Subscan]: `https://paseo.subscan.io/`,
   },
   testnet: true,
-  faucetUrls: ['https://matrix.to/#/#rococo-faucet:matrix.org'],
+  faucetUrls: ['https://matrix.to/#/#paseo-faucet:matrix.org'],
 }
 
-export const rococo: SubstrateChain = {
-  network: 'rococo',
-  name: 'Rococo Relay Chain',
-  ss58Prefix: 42,
-  rpcUrls: ['wss://rococo-rpc.polkadot.io'],
+export const paseoCoretime: SubstrateChain = {
+  network: 'paseo-coretime',
+  name: 'Paseo Coretime',
+  ss58Prefix: 0,
+  rpcUrls: ['wss://sys.ibp.network/coretime-paseo'],
   explorerUrls: {
-    [SubstrateExplorer.Subscan]: `https://rococo.subscan.io`,
+    [SubstrateExplorer.Subscan]: `https://paseo.subscan.io/`,
   },
   testnet: true,
-  faucetUrls: ['https://matrix.to/#/#rococo-faucet:matrix.org'],
-}
-
-export const rococoCoretime: SubstrateChain = {
-  network: 'rococo-coretime',
-  name: 'Rococo Coretime Testnet',
-  ss58Prefix: 42,
-  rpcUrls: ['wss://rococo-coretime-rpc.polkadot.io'],
-  explorerUrls: {
-    [SubstrateExplorer.Subscan]: `https://rococo.subscan.io`,
-  },
-  testnet: true,
-  faucetUrls: ['https://matrix.to/#/#rococo-faucet:matrix.org'],
+  faucetUrls: ['https://matrix.to/#/#paseo-faucet:matrix.org'],
 }
 
 export const westend: SubstrateChain = {
@@ -334,9 +322,8 @@ export const polkadotCoretime: SubstrateChain = {
 export const allSubstrateChains: SubstrateChain[] = [
   development,
   alephzeroTestnet,
-  rococo,
-  rococoContracts,
-  rococoCoretime,
+  paseo,
+  paseoCoretime,
   westend,
   westendCoretime,
   t0rnTestnet,
